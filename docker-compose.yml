@@ -1,27 +1,24 @@
 services:
-  gluetun:
-    image: qmcgaw/gluetun:latest
-    container_name: gluetun
+  openvpn:
+    image: kylemanna/openvpn
+    container_name: openvpn
     cap_add:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - ${VPN_OVPN_PATH}:/gluetun/vpn.ovpn:ro
-      - ./gluetun/data:/gluetun
+      - ${VPN_OVPN_PATH}:/etc/openvpn/credentials.ovpn:ro
     environment:
-      - VPN_TYPE=openvpn
       - VPN_USER=${VPN_USERNAME}
       - VPN_PASSWORD=${VPN_PASSWORD}
-      - OPENVPN_CUSTOM_CONFIG=/gluetun/vpn.ovpn
-      - TZ=Europe/Moscow
+      - OVPN_CONFIG=credentials
     ports:
       - "3129:3129/tcp"
       - "5800:5800/tcp"
       - "5900:5900/tcp"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "gluetun-healthcheck"]
+      test: ["CMD", "openvpn-healthcheck"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -30,9 +27,9 @@ services:
     image: jlesage/jdownloader-2:latest
     container_name: jdownloader2
     depends_on:
-      gluetun:
+      openvpn:
         condition: service_healthy
-    network_mode: "service:gluetun"
+    network_mode: "service:openvpn"
     environment:
       - PUID=1000
       - PGID=1000
