@@ -15,7 +15,7 @@ services:
       - DARK_MODE=1                               # Optional: Enable dark mode (1) or disable (0)
     volumes:
       - ./jdownloader2/config:/config:rw          # Stores JDownloader configuration and state
-      - /mnt/DATA/Downloads:/output:rw            # Maps downloads to /mnt/DATA/Downloads
+      - ${DOWNLOAD_DIR}:/output:rw                # Maps host download directory to /output in container (from .env)
     ports:
       - 3129:3129                                 # MyJDownloader direct connection port
       - 5800:5800                                 # Web UI access (HTTP)
