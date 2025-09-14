@@ -18,26 +18,20 @@ VNC_PASSWORD=your_secure_vnc_password
 # Download Directory Path on Host
 DOWNLOAD_DIR=/mnt/DATA/Downloads
 
+# OpenVPN Settings
 VPN_OVPN_PATH=/absolute/path/to/your/config.ovpn  # e.g., /home/username/vpn/config.ovpn
+
+# Make sure that you have this in it:
+# auth-user-pass /vpn/vpn.auth <-------------------------------------------------------- !!! 
+# ---------------------------------------------------------------------------------------
+
 VPN_USERNAME=your_vpn_username
 VPN_PASSWORD=your_vpn_password
 ```
 
 Replace the placeholders with your actual values. This file should be kept secure and not shared.
 
-Alternatively, set these environment variables directly in your shell before running Docker Compose:
-
-```bash
-# ...
-export MYJD_EMAIL=your_email@example.com
-export MYJD_PASSWORD=your_myjdownloader_password
-export MYJD_DEVICE=your_device_name
-export VNC_PASSWORD=your_vnc_password
-export DOWNLOAD_DIR=/mnt/DATA/Downloads
-# ... etc.
-```
-
-Run the container:
+Then, run the container:
 
 ```bash
 ./start
