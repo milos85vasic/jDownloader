@@ -1,8 +1,40 @@
 version: '3.8'
 services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - ${VPN_OVPN_PATH}:/gluetun/vpn.ovpn:ro
+      - ./gluetun/data:/gluetun
+    environment:
+      - VPN_TYPE=openvpn
+      - VPN_ENDPOINT_IP=${VPN_ENDPOINT_IP} # Optional: can be set in .env for reliability
+      - VPN_USER=${VPN_USERNAME}
+      - VPN_PASSWORD=${VPN_PASSWORD}
+      - OPENVPN_CUSTOM_CONFIG=/gluetun/vpn.ovpn
+      - TZ=Europe/Moscow
+    ports:
+      - "3129:3129/tcp"
+      - "5800:5800/tcp"
+      - "5900:5900/tcp"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "gluetun-healthcheck"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
   jdownloader2:
     image: jlesage/jdownloader-2:latest
     container_name: jdownloader2
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
@@ -15,8 +47,4 @@ services:
     volumes:
       - ./jdownloader2/config:/config:rw
       - ${DOWNLOAD_DIR}:/output:rw
-    ports:
-      - 3129:3129  # MyJDownloader direct connection port :cite[1]:cite[2]
-      - 5800:5800  # Web UI access
-      - 5900:5900  # VNC access (optional)
     restart: unless-stopped
