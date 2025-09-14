@@ -18,8 +18,8 @@ VNC_PASSWORD=your_secure_vnc_password
 # Download Directory Path on Host
 DOWNLOAD_DIR=/mnt/DATA/Downloads
 
-VPN_OVPN_PATH=/absolute/path/to/your/config.ovpn  # e.g., /home/username/vpn/config.ovpn
-VPN_USERNAME=your_vpn_username
+OPENVPN_CUSTOM_CONFIG=/absolute/path/to/your/config.ovpn  # e.g., /home/username/vpn/config.ovpn
+VPN_USER=your_vpn_username
 VPN_PASSWORD=your_vpn_password
 ```
 
