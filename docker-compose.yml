@@ -4,18 +4,20 @@ services:
     image: jlesage/jdownloader-2:latest
     container_name: jdownloader2
     environment:
+      environment:
       - PUID=1000                                 # User ID (run `id -u` to check)
       - PGID=1000                                 # Group ID (run `id -g` to check)
       - TZ=Europe/Moscow                          # Timezone (same as your qBittorrent)
-      - MYJDOWNLOADER_EMAIL=your_email@example.com # Optional: MyJDownloader account email
-      - MYJDOWNLOADER_PASSWORD=your_password      # Optional: MyJDownloader account password
-      - MYJDOWNLOADER_DEVICE_NAME=your_device_name # Optional: Device name for MyJDownloader
+      - MYJDOWNLOADER_EMAIL=${MYJD_EMAIL}         # MyJDownloader account email (set in .env)
+      - MYJDOWNLOADER_PASSWORD=${MYJD_PASSWORD}   # MyJDownloader account password (set in .env)
+      - MYJDOWNLOADER_DEVICE_NAME=${MYJD_DEVICE}  # Device name for MyJDownloader (set in .env)
+      - VNC_PASSWORD=${VNC_PASSWORD}              # VNC password for web UI access (set in .env)
       - DARK_MODE=1                               # Optional: Enable dark mode (1) or disable (0)
-      - VNC_PASSWORD=your_password                # Optional: Password for VNC access (recommended for security)
     volumes:
       - ./jdownloader2/config:/config:rw          # Stores JDownloader configuration and state
       - /mnt/DATA/Downloads:/output:rw            # Maps downloads to /mnt/DATA/Downloads
     ports:
+      - 3129:3129                                 # MyJDownloader direct connection port
       - 5800:5800                                 # Web UI access (HTTP)
       - 5900:5900                                 # VNC access (optional)
     restart: unless-stopped
