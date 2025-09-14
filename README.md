@@ -10,7 +10,7 @@ Create an .env file (optional but recommended) in the same directory as your doc
 # MyJDownloader Account Settings
 MYJD_EMAIL=your_email@example.com
 MYJD_PASSWORD=your_myjdownloader_password
-MYJD_DEVICE_NAME=your_device_name
+MYJD_DEVICE=your_device_name
 
 # VNC Password for Web UI Access
 VNC_PASSWORD=your_secure_vnc_password
@@ -26,7 +26,7 @@ Alternatively, set these environment variables directly in your shell before run
 ```bash
 export MYJD_EMAIL=your_email@example.com
 export MYJD_PASSWORD=your_myjdownloader_password
-export MYJD_DEVICE_NAME=your_device_name
+export MYJD_DEVICE=your_device_name
 export VNC_PASSWORD=your_vnc_password
 export DOWNLOAD_DIR=/mnt/DATA/Downloads
 ```
