@@ -4,7 +4,6 @@ services:
     image: jlesage/jdownloader-2:latest
     container_name: jdownloader2
     environment:
-      environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Moscow
@@ -17,7 +16,7 @@ services:
       - ./jdownloader2/config:/config:rw
       - ${DOWNLOAD_DIR}:/output:rw
     ports:
-      - 3129:3129                 
-      - 5800:5800                 
-      - 5900:5900                 
+      - 3129:3129  # MyJDownloader direct connection port :cite[1]:cite[2]
+      - 5800:5800  # Web UI access
+      - 5900:5900  # VNC access (optional)
     restart: unless-stopped
