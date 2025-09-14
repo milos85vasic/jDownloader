@@ -2,6 +2,8 @@ services:
   openvpn:
     image: dperson/openvpn-client
     container_name: openvpn
+    profiles:
+      - vpn
     cap_add:
       - NET_ADMIN
     devices:
@@ -24,13 +26,37 @@ services:
       timeout: 10s
       retries: 3
 
-  jdownloader2:
+  jdownloader2-vpn:
     image: jlesage/jdownloader-2:latest
     container_name: jdownloader2
+    profiles:
+      - vpn
     depends_on:
       openvpn:
         condition: service_healthy
     network_mode: "service:openvpn"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Moscow
+      - MYJDOWNLOADER_EMAIL=${MYJD_EMAIL}
+      - MYJDOWNLOADER_PASSWORD=${MYJD_PASSWORD}
+      - MYJDOWNLOADER_DEVICE_NAME=${MYJD_DEVICE}
+      - VNC_PASSWORD=${VNC_PASSWORD}
+      - DARK_MODE=1
+    volumes:
+      - ./jdownloader2/config:/config:rw
+      - ${DOWNLOAD_DIR}:/output:rw
+    restart: unless-stopped
+
+  jdownloader2-direct:
+    image: jlesage/jdownloader-2:latest
+    container_name: jdownloader2
+    profiles:
+      - no-vpn
+    ports:
+      - "5800:5800/tcp"
+      - "5900:5900/tcp"
     environment:
       - PUID=1000
       - PGID=1000
