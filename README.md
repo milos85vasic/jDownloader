@@ -27,6 +27,9 @@ VPN_OVPN_PATH=/absolute/path/to/your/config.ovpn  # e.g., /home/username/vpn/con
 
 VPN_USERNAME=your_vpn_username
 VPN_PASSWORD=your_vpn_password
+
+# Use VPN toggle
+USE_VPN=true
 ```
 
 Replace the placeholders with your actual values. This file should be kept secure and not shared.

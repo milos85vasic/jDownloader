@@ -1,3 +1,24 @@
 #!/bin/bash
 
-./init && docker-compose up -d
+set -e
+
+# Load .env file
+if [ -f .env ]; then
+    
+    set -a
+    source .env
+    set +a
+fi
+
+./init
+
+if [ "$USE_VPN" = "true" ]; then
+
+    echo "Starting services with VPN..."
+    docker-compose --profile vpn up -d
+
+else
+    
+    echo "Starting services without VPN..."
+    docker-compose --profile no-vpn up -d
+fi
