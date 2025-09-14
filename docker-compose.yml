@@ -5,19 +5,19 @@ services:
     container_name: jdownloader2
     environment:
       environment:
-      - PUID=1000                                 # User ID (run `id -u` to check)
-      - PGID=1000                                 # Group ID (run `id -g` to check)
-      - TZ=Europe/Moscow                          # Timezone (same as your qBittorrent)
-      - MYJDOWNLOADER_EMAIL=${MYJD_EMAIL}         # MyJDownloader account email (set in .env)
-      - MYJDOWNLOADER_PASSWORD=${MYJD_PASSWORD}   # MyJDownloader account password (set in .env)
-      - MYJDOWNLOADER_DEVICE_NAME=${MYJD_DEVICE}  # Device name for MyJDownloader (set in .env)
-      - VNC_PASSWORD=${VNC_PASSWORD}              # VNC password for web UI access (set in .env)
-      - DARK_MODE=1                               # Optional: Enable dark mode (1) or disable (0)
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Moscow
+      - MYJDOWNLOADER_EMAIL=${MYJD_EMAIL}
+      - MYJDOWNLOADER_PASSWORD=${MYJD_PASSWORD}
+      - MYJDOWNLOADER_DEVICE_NAME=${MYJD_DEVICE}
+      - VNC_PASSWORD=${VNC_PASSWORD}
+      - DARK_MODE=1
     volumes:
-      - ./jdownloader2/config:/config:rw          # Stores JDownloader configuration and state
-      - ${DOWNLOAD_DIR}:/output:rw                # Maps host download directory to /output in container (from .env)
+      - ./jdownloader2/config:/config:rw
+      - ${DOWNLOAD_DIR}:/output:rw
     ports:
-      - 3129:3129                                 # MyJDownloader direct connection port
-      - 5800:5800                                 # Web UI access (HTTP)
-      - 5900:5900                                 # VNC access (optional)
+      - 3129:3129                 
+      - 5800:5800                 
+      - 5900:5900                 
     restart: unless-stopped
