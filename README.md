@@ -40,6 +40,5 @@ export DOWNLOAD_DIR=/mnt/DATA/Downloads
 Run the container:
 
 ```bash
-docker-compose up -d
+./start
 ```
-
