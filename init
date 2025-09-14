@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ -z "$VPN_USERNAME" ]; then
+
+    echo "ERROR: VPN_USERNAME is not set. Please set it in the .env file."
+    exit 1
+fi
+
+if [ -z "$VPN_PASSWORD" ]; then
+
+    echo "ERROR: VPN_PASSWORD is not set. Please set it in the .env file."
+    exit 1
+fi
+
+cat > vpn-auth.txt << EOF
+${VPN_USERNAME}
+${VPN_PASSWORD}
+EOF
+
+chmod 600 vpn-auth.txt
+
+if [ -f vpn-auth.txt ]; then
+
+    echo "VPN authentication file created successfully."
+    exit 0
+fi
+
+echo "Failed to create VPN authentication file."
+exit 1

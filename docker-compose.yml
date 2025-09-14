@@ -1,27 +1,25 @@
 services:
   openvpn:
-    image: qmcgaw/gluetun
+    image: dperson/openvpn-client
     container_name: openvpn
     cap_add:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - ${VPN_OVPN_PATH}:/gluetun/custom.ovpn:ro
-    environment:
-      - VPN_SERVICE_PROVIDER=custom
-      - VPN_TYPE=openvpn
-      - OPENVPN_CUSTOM_CONFIG=/gluetun/custom.ovpn
-      - OPENVPN_USER=${VPN_USERNAME}
-      - OPENVPN_PASSWORD=${VPN_PASSWORD}
-      - TZ=Europe/Moscow
+      - ${VPN_OVPN_PATH}:/vpn/credentials.ovpn:ro
+      - ./vpn-auth.txt:/vpn/vpn.auth:ro
     ports:
       - "3129:3129/tcp"
-      - "5800:5800/tcp" 
+      - "5800:5800/tcp"
       - "5900:5900/tcp"
+    environment:
+      - TZ=Europe/Moscow
+    security_opt:
+      - label:disable
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://www.google.com"]
+      test: ["CMD", "ping", "-c", "1", "8.8.8.8"]
       interval: 30s
       timeout: 10s
       retries: 3
